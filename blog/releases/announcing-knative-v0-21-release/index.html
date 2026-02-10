@@ -1,0 +1,5479 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Knative v0.21 release announcement">
+      
+      
+        <meta name="author" content="[Carlos Santana](https://twitter.com/csantanapr)">
+      
+      
+        <link rel="canonical" href="https://knative.dev/blog/releases/announcing-knative-v0-21-release/">
+      
+      
+        <link rel="prev" href="../announcing-knative-v0-22-release/">
+      
+      
+        <link rel="next" href="../announcing-knative-v0-20-release/">
+      
+      
+        
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>v0.21 release - Knative</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-YRMNFYE32R"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-YRMNFYE32R",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-YRMNFYE32R",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+<meta name="theme-color" content="#1a7dc9" />
+
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#announcing-knative-v021-release" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      <!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Determine classes -->
+
+
+  
+
+
+<!-- Header -->
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="Header"
+  >
+
+    <!-- Link to home -->
+    <a
+      href="../../.."
+      title="Knative"
+      class="md-header__button md-logo"
+      aria-label="Knative"
+      data-md-component="logo"
+    >
+      
+  <img src="../../../images/logo/rgb/knative-logo-rgb.png" alt="logo">
+
+    </a>
+
+    <!-- Button to open drawer -->
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    <!-- Header title -->
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knative
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              v0.21 release
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color palette toggle -->
+    
+
+    <!-- User preference: color palette -->
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+
+    <!-- Top Nav -->
+    <ul class="md-tabs__list mr-30">
+      <li class="md-tabs__item">
+        <a href="../../.." class="md-tabs__link">
+          Home
+        </a>
+      </li>
+      <li class="md-tabs__item">
+        <a href="/docs/" class="md-tabs__link">
+          Docs
+        </a>
+      </li>
+      <li class="md-tabs__item">
+        <a href="/about/testimonials/" class="md-tabs__link">
+          About
+        </a>
+      </li>
+      <li class="md-tabs__item">
+        <a href="/blog/" class="md-tabs__link">
+          Blog
+        </a>
+      </li>
+      <li class="md-tabs__item">
+        <a href="/community/" class="md-tabs__link">
+          Community
+        </a>
+      </li>
+    </ul>
+
+    <!-- Site language selector -->
+    
+
+    <!-- Button to open search modal -->
+    
+      
+
+      <!-- Check if search is actually enabled - see https://t.ly/DT_0V -->
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+
+        <!-- Search interface -->
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+
+    <!-- Repository information -->
+    
+      <div class="md-header__source">
+        <a href="https://github.com/knative/docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+
+  <!-- Sub Navigation tabs (sticky) -->
+  
+    
+      
+        <!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+
+
+<!-- Navigation tabs -->
+<nav
+  class="md-tabs"
+  aria-label="Tabs"
+  data-md-component="tabs"
+>
+  
+  
+  
+    
+  
+
+  
+</nav>
+      
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+
+
+<!-- Determine classes -->
+
+
+  
+
+
+
+<!-- Navigation -->
+<nav
+  class="md-nav md-nav--primary md-nav--lifted"
+  aria-label="Navigation"
+  data-md-level="0"
+>
+
+  <!-- Site title -->
+  <label class="md-nav__title" for="__drawer">
+    <a
+      href="../../.."
+      title="Knative"
+      class="md-nav__button md-logo"
+      aria-label="Knative"
+      data-md-component="logo"
+    >
+      
+  <img src="../../../images/logo/rgb/knative-logo-rgb.png" alt="logo">
+
+    </a>
+    Knative
+  </label>
+
+  <!-- Repository information -->
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/knative/docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+
+  <!-- Navigation list -->
+  
+  
+  
+    
+  
+
+  <ul class="md-nav__list" data-md-scrollfix>
+    <!-- All NAVS: [Section(title='Blog')] -->
+    
+      
+        <!-- nav item: Section(title='Blog') -->
+        
+        
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Releases
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-21-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.21 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-20-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.20 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-19-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.19 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-18-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.18 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-17-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.17 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-16-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.16 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-15-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.15 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-14-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.14 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-13-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.13 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-12-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.12 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-11-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.11 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-10-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.10 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-9-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.9 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-8-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.8 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-7-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.7 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-6-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.6 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-5-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.5 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-4-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.4 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-3-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.3 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-2-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.2 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-1-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.1 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v1-0-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.0 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knative-1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Details on the 1.0 release of Knative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Announcing: Knative 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-26-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.26 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-25-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.25 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-24-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.24 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-23-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.23 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-22-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.22 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.21 release
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.21 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#announcing-knative-v021-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Announcing Knative v0.21 Release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Announcing Knative v0.21 Release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#serving-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventing-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eventing v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧹 Clean up
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventing-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing Extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eventing Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eventing-rabbitmq-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing RabbitMQ v0.21
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧹 Clean up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventing-kafka-source-channel-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing Kafka Source, Channel v0.21
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventing-kafka-broker-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing Kafka Broker v0.21
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Plugins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CLI Plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operator v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧹 Clean up
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thank-you-contributors-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thank you contributors v0.21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learn-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learn more
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-20-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.20 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-19-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.19 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-18-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.18 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-17-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.17 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-5-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.5 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-4-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.4 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-3-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.3 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../announcing-knative-v0-2-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.2 release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Articles
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Articles
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-eventing-eda-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building a Resilient AI Triage System with Event-Driven Agents and Knative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/kubevirt_meets_eventing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring Virtual Machines with Knative Eventing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/ai_functions_llama_stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI powered Knative Functions for Inference with Llama Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/configurable-runtimeclassnames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurable RuntimeClassNames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/CONXAIs_AI_inference_on_Amazon_EKS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building the future of construction analytics: CONXAI’s AI inference on Amazon EKS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/How_Conxai_uses_Knative_Eventing_to_provide_AI_APIs_in_the_construction_industry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How CONXAI uses Knative Eventing to provide AI APIs in the construction industry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/consuming_sqs_data_with_integrationsource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consuming AWS SQS Events with Knative Eventing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-backstage-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative Backstage Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/Knative-Serving-WebSockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building WebSocket Applications with Knative using Golang
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/Building-Stateful-applications-with-Knative-and-Restate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building Stateful applications with Knative and Restate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/llm-agents-demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Agents with Knative: A Demo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/llm-agents-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Agents with Knative: An Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/cross-namespace-event-links-feature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My LFX Mentorship Experience: Cross Namespace Event Links Feature
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/aws_to_func_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migrating Functions from AWS Lambda to Knative Functions using Golang
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/consuming_s3_data_with_knative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consuming AWS S3 Events with Knative Eventing, Functions and Apache Camel K
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/How-IBM-watsonx-Assistant-uses-Knative-Eventing-to-train-machine-learning-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How IBM Watsonx Assistant uses Knative Eventing to train machine learning models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/enhancing-the-knative-experience/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhancing the Knative Contributor Experience!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-meets-apache-camel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event Sourcing with Apache Camel K and Knative Eventing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-backstage-plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative and Backstage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/demystifying-activator-on-path/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demystifying Activator on the data path
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-eventing-vision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vision: Secure Event processing and improved Event discoverability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/new_event_discovery_features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Better Developer experience with improved event discovery in Knative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/getting-started-blog-p3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started in Open Source with Knative Part 3: API Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/getting-started-blog-p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started in Open Source with Knative Part 2: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/getting-started-blog-p1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started in Open Source with Knative Part 1: Introduction to Open Source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/getting-started-blog-p0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started in Open Source with Knative Part 0: Introduction and Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/improved-ha-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improving HA configuration for Knative workloads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/from-cloudevent-to-apache-kafka-records-part-two/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    From CloudEvents to Apache Kafka Records, Part II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-serving-in-k0s/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative Serving in k0s
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/from-cloudevent-to-apach-kafka-records-part-one/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    From CloudEvents to Apache Kafka Records, Part I
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/kafka-broker-with-isolated-data-plane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative Apache Kafka Broker with Isolated Data Plane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/single-node-kafka-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using Apache Kafka for Local Knative Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/eventing-rabbitmq-announcement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Announcing Eventing RabbitMQ moving to GA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/performance-test-with-slos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple Performance Testing with SLOs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/workflow-as-function-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflow as a Function Flow with Automatiko
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/highlighting-value-knative-c-suite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Highlighting the Value of Knative for the C-Suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/quickstart-with-knative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Announcing the Knative Quickstart plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/distributed-tracing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed tracing with Knative, OpenTelemetry and Jaeger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/event-drive-app-knative-eventing-kogito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestrating Events with Knative and Kogito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/orchestrating-cloud-events-with/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestrating CloudEvents with Knative and Zeebe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/event-driven-image-bigquery-processing-pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event-driven Image and BigQuery processing pipelines with Knative on Google Cloud
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/get-started-knative-eventing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started with Knative Eventing using Bitcoin transaction data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/knative-v0-3-autoscaling-a-love-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative v0.3 Autoscaling — A Love Story
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/ko-fast-kubernetes-microservice-development-in-go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ko: fast Kubernetes microservice development in Go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../articles/build-deploy-manage-modern-serverless-workloads-using-knative-on-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serverless workloads using Knative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering Committee
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Steering Committee
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2024-02-14-trademark-committee-dissolved/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative Trademark Committee Dissolved
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/toc-2022-election-announcement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TOC 2022 election announcement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2022-04-14-annual-report-2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021 Annual Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/knative-and-endusers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative and endusers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/cncf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative accepted as a CNCF incubating project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/knative-cncf-donation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative Has Applied to Become a CNCF Incubating Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2021-end-user-election/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021 Steering Committee End User Seat Election
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2021-12-14-steering-elections-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome new Steering Committee members
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/steering-elections-2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering Elections 2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/toc-2021-election-announcement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TOC 2021 election announcement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2020-11-ksc-elections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Democracy is a beautiful thing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/governance-changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Governance changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2020-05-toc_election_results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative welcomes new TOC members
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2020-01-annual-report-2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019 Annual Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../steering/2019-12-updates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update from the Steering Committee for December 2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Events
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/security-audit-2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative Completes Third-Party Security Audit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/knative-at-kubecon-na-2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to catch news about Knative project during KubeCon + CloudNativeCon NA 2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/fuzzing-audit-2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fuzzing audit results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/knative-projectmeeting-kubecon-eu-2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Announcing Knative Project meeting and Knative Kiosk in the expo area at KubeCon + CloudNativeCon Europe 2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/google-summer-of-code-2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Google Summer of Code 2023 at Knative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/virtual-office-hour-12-2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First 🌱 Knative Virtual Office Hour
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/knative-at-kubecon-na-2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative at KubeCon ’22 North America
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/google-summer-of-code-2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative community participating in Google Summer of Code 2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/install-fest-04-2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative InstallFest 2022/04/26
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/knative-at-kubecon-eu-2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative at KubeCon’19 Europe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/knative-at-kubecon-seattle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knative at KubeCon Seattle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#announcing-knative-v021-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Announcing Knative v0.21 Release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Announcing Knative v0.21 Release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#serving-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventing-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eventing v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧹 Clean up
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventing-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing Extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eventing Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eventing-rabbitmq-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing RabbitMQ v0.21
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧹 Clean up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventing-kafka-source-channel-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing Kafka Source, Channel v0.21
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventing-kafka-broker-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing Kafka Broker v0.21
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-or-notable_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Breaking or Notable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Plugins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CLI Plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator v0.21
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operator v0.21">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-features-changes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💫 New Features &amp; Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐞 Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧹 Clean up
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thank-you-contributors-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thank you contributors v0.21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learn-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learn more
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+<!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Actions -->
+
+
+  <!-- Edit button -->
+  <a
+      href="https://github.com/knative/docs/edit/main/docs/blog/releases/announcing-knative-v0-21-release.md"
+      title="Edit this page"
+      class="md-content__button md-icon"
+      rel="edit"
+    >
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+
+  <!-- View button -->
+  
+
+
+  <h1>v0.21 release</h1>
+
+<h3 id="announcing-knative-v021-release">Announcing Knative v0.21 Release<a class="headerlink" href="#announcing-knative-v021-release" title="Permanent link">&para;</a></h3>
+<p>A new version of Knative is now available across multiple components.
+Follow the instructions in the documentation <a href="https://knative.dev/docs/install/">Installing Knative</a> for the respective component.</p>
+<h4 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="#serving-v021">Serving v0.21</a></li>
+<li><a href="#eventing-v021">Eventing v0.21</a></li>
+<li>Eventing Extensions<ul>
+<li><a href="#eventing-rabbitmq-v021">Eventing RabbitMQ v0.21</a></li>
+<li><a href="#eventing-kafka-source-channel-v021">Eventing Kafka Source, Channel v0.21</a></li>
+<li><a href="#eventing-kafka-broker-v021">Eventing Kafka Broker v0.21</a></li>
+</ul>
+</li>
+<li><code>kn</code> <a href="#client-v021">CLI v0.21</a><ul>
+<li><code>kn</code> <a href="#cli-plugins">CLI Plugins</a></li>
+</ul>
+</li>
+<li><a href="#operator-v021">Operator v0.21</a></li>
+<li><a href="#thank-you-contributors-v0.21">Thank you contributors v0.21</a></li>
+</ul>
+<h3 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Kubernetes minimum version has changed to v1.18<ul>
+<li>See our <a href="https://github.com/knative/community/blob/main/mechanics/RELEASE-VERSIONING-PRINCIPLES.md#k8s-minimum-version-principle">K8s minimum version principle</a></li>
+</ul>
+</li>
+<li>Now Serving supports Istio 1.9 and Contour 1.12</li>
+<li>Fix for DomainMapping when using Kourier with AutoTLS</li>
+<li>Eventing Source <strong>PingSource</strong> binary mode has breaking changes.</li>
+<li>Eventing sync has the ability to know when to reply, see the <a href="https://github.com/knative/eventing/blob/release-0.21/docs/spec/data-plane.md#event-reply-contract">event reply header contract</a> specification for more details.</li>
+<li>The CLI <code>kn</code> 0.21.0 comes with some bug fixes and minor feature enhancements. It's mostly a polishing release. It is also the first release that brings two kn plugins to the Knative release train.</li>
+<li>The Knative Operator now supports net-kourier</li>
+<li>The Knative Opertor now supports a version of <code>latest</code> as a special version supported by the operator</li>
+</ul>
+<h3 id="serving-v021">Serving v0.21<a class="headerlink" href="#serving-v021" title="Permanent link">&para;</a></h3>
+<h4 id="breaking-or-notable">🚨 Breaking or Notable<a class="headerlink" href="#breaking-or-notable" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Kubernetes minimum version has changed to v1.18<ul>
+<li>See our <a href="https://github.com/knative/community/blob/main/mechanics/RELEASE-VERSIONING-PRINCIPLES.md#k8s-minimum-version-principle">K8s minimum version principle</a></li>
+</ul>
+</li>
+<li>GC v1 and Labeler v1 deprecated and removed from the code base</li>
+<li>Webhooks certificates now use Ed25519 instead of RSA/2048 and have an expiry of one week (<a href="https://github.com/knative/pkg/pull/1998">knative/pkg#1998</a>)</li>
+</ul>
+<h4 id="new-features-changes">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Introduces autocreateClusterDomainClaim in config-network config map. This allows DomainMappings to be safely used in shared clusters by disabling automatic ClusterDomainClaim creation. With this option set to "false", cluster administrators must explicitly delegate domain names to namespaces by creating a ClusterDomainClaim with an appropriate spec.Namespace set. (<a href="https://github.com/knative/serving/pull/10537">#10537</a>)</li>
+<li>Domain mappings disallow mapping from cluster local domain names (generally domains under "cluster.local") (<a href="">#10798</a>)</li>
+<li>Allow setting ReadOnlyRootFilesystem on the container's SecurityContext (<a href="https://github.com/knative/serving/pull/10560">#10560</a>)</li>
+<li>A container's readiness probe FailureThreshold &amp; TimeoutSeconds are now defaulted to 3 and 1 respectively when a user opts into non-aggressive probing (ie. PeriodTimeout &gt; 1) (<a href="https://github.com/knative/serving/pull/10700">#10700</a>)</li>
+<li>Avoids implicitly adding an "Accept-Encoding: gzip" header to proxied requests if one was not already present. (<a href="https://github.com/knative/serving/pull/10691">#10691</a>)</li>
+<li>Gradual Rollout is possible to set on individual Revisions usingserving.knative.dev/rolloutDuration annotation, (<a href="https://github.com/knative/serving/pull/10561">#10561</a>)</li>
+<li>Support Istio 1.9 (knative-extensions/net-istio#515](https://github.com/knative-extensions/net-istio/pull/515))</li>
+<li>Support Contour 1.12 (knative-extensions/net-contour#414](https://github.com/knative-extensions/net-contour/pull/414))</li>
+</ul>
+<h4 id="bug-fixes">🐞 Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Fixes problem with domainmapping when working with auto-tls and kourier challenge (<a href="https://github.com/knative/serving/pull/10811">#10811</a></li>
+<li>Fixed a bug where the activator's metrics could get stuck and thus scale to and from zero didn't work as expected. (<a href="https://github.com/knative/serving/pull/10729">#10729</a>)</li>
+<li>Fixes a race in Queue Proxy drain logic that could, in a very unlikely edge case, lead to the pre-stop hook not exiting even though draining has finished (<a href="https://github.com/knative/serving/pull/10781">#10781</a>)</li>
+<li>Avoid slow out-of-memory issue related to metrics (<a href="https://github.com/knative/pkg/pull/2020">knative/pkg#2005</a>)</li>
+<li>Stop reporting reflector metrics since they were removed upstream (<a href="https://github.com/knative/pkg/pull/2020">knative/pkg#2020</a>)</li>
+</ul>
+<h3 id="eventing-v021">Eventing v0.21<a class="headerlink" href="#eventing-v021" title="Permanent link">&para;</a></h3>
+<h4 id="breaking-or-notable_1">🚨 Breaking or Notable<a class="headerlink" href="#breaking-or-notable_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>BREAKING CHANGE</strong>: PingSource binary mode now sends the actual binary data in event body instead of base64-encoded form. (#4851](https://github.com/knative/eventing/pull/4851), @eclipselu)</li>
+<li>You need to run the storage migration tool after the upgrade to migrate from <code>v1beta1</code> to <code>v1beta2</code> <code>pingsources.sources.knative.dev</code> resources. (#4750](https://github.com/knative/eventing/pull/4750), @eclipselu)</li>
+</ul>
+<h4 id="new-features-changes_1">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Adding HorizontalPodAutoscaler and PodDisruptionBudget for the eventing webhook (<a href="https://github.com/knative/eventing/pull/4792">#4792</a>)</li>
+<li>Add <a href="https://github.com/knative/eventing/blob/release-0.21/docs/spec/data-plane.md#event-reply-contract">event reply header contract</a> to the spec (<a href="https://github.com/knative/eventing/pull/4560">#4560</a>)</li>
+<li>Cloudevent traces available for PingSource (<a href="https://github.com/knative/eventing/pull/4877">#4877</a>)</li>
+<li>CloudEvents send to dead-letter endpoints include extension attribute called ce-knativedispatcherr which contains encoded HTTP Response error information from final dispatch attempt. (<a href="https://github.com/knative/eventing/pull/4760">#4760</a>, @travis-minke-sap)</li>
+<li>Message receiver supports customized liveness and readiness check (<a href="https://github.com/knative/eventing/pull/4730">#4730</a>)</li>
+<li>The imc-dispatcher service adds new trace span attributes to be consistent with broker-ingress.knative-eventing &amp; broker-filter.knative-eventing services. The new attributes are messaging.destination, messaging.message_id, messaging.protocol and messaging.system (<a href="https://github.com/knative/eventing/pull/4659">#4659</a>)</li>
+<li>Add Trigger.Delivery field which allows configuration of Delivery per Trigger. (<a href="https://github.com/knative/eventing/pull/4654">#4654</a>)</li>
+</ul>
+<h4 id="bug-fixes_1">🐞 Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Fix availability of zipkin traces for APIServerSource (<a href="https://github.com/knative/eventing/pull/4842">#4842</a>)</li>
+<li>Fix bug where sometimes the pods were not deemed up during setup. (<a href="https://github.com/knative/eventing/pull/4725">#4725</a>, <a href="https://github.com/knative/eventing/pull/4741">#4741</a>)</li>
+<li>Fix bug where v1beta1 would allow mutations to immutable fields. v1beta1 trigger.spec.broker is immutable. (<a href="https://github.com/knative/eventing/pull/4843">#4843</a>)</li>
+</ul>
+<h4 id="clean-up">🧹 Clean up<a class="headerlink" href="#clean-up" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Now the config-imc-event-dispatcher values are not configurable on-fly anymore, that is, if you need to configure such values, you need to redeploy the dispatcher deployment (<a href="https://github.com/knative/eventing/pull/4543">#4543</a>)</li>
+<li>PingSource: remove special handling of JSON data since events are always sent in binary mode. (<a href="https://github.com/knative/eventing/pull/4858">#4858</a>)</li>
+<li>Cleanup channel duck types internals (<a href="https://github.com/knative/eventing/pull/4749">#4749</a>)</li>
+</ul>
+<h3 id="eventing-extensions">Eventing Extensions<a class="headerlink" href="#eventing-extensions" title="Permanent link">&para;</a></h3>
+<h4 id="eventing-rabbitmq-v021">Eventing RabbitMQ v0.21<a class="headerlink" href="#eventing-rabbitmq-v021" title="Permanent link">&para;</a></h4>
+<h4 id="breaking-or-notable_2">🚨 Breaking or Notable<a class="headerlink" href="#breaking-or-notable_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Kubernetes minimum version has changed to v1.18<ul>
+<li>Upgrade to v0.19.7 of k8s libraries. Minimum k8s version is now 1.18. (<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/213">#213</a>)</li>
+</ul>
+</li>
+</ul>
+<h4 id="new-features-changes_2">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Support new releases of rabbitmq cluster operator v1.0, v1.1, v1.2, v1.3 . (<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/204">#204</a>)</li>
+</ul>
+<h4 id="documentation">📖 Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Added user-facing documentation for the RabbitMQ source (<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/201">#201</a>)</li>
+</ul>
+<h4 id="clean-up_1">🧹 Clean up<a class="headerlink" href="#clean-up_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Update or clean up current behavior - Use go 1.15 in kind e2e tests. (<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/196">#196</a>)</li>
+<li>Update or clean up current behavior Use go 1.15 in go.mod (<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/215">#215</a>)</li>
+<li>Update the comments in cmd/failer/main.go to match reality. (<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/210">#210</a>)</li>
+<li>Use scripts from hack to determine pod readiness.(<a href="https://github.com/knative-extensions/eventing-rabbitmq/pull/209">#209</a>)</li>
+</ul>
+<h4 id="eventing-kafka-source-channel-v021">Eventing Kafka Source, Channel v0.21<a class="headerlink" href="#eventing-kafka-source-channel-v021" title="Permanent link">&para;</a></h4>
+<h4 id="new-features-changes_3">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Adding new optional field named sasltype to default kafka-secret to enable other Kafka SASL Methods than PLAIN. Supports SCRAM-SHA-256 or SCRAM-SHA-512. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/332">#332</a>)</li>
+<li>Adding tls.enabled flag for public cert usage and allowing skipping CA/User certs and key (<a href="https://github.com/knative-extensions/eventing-kafka/pull/359">#359</a>)</li>
+<li>KafkaSource and KafkaChannel will be default use the config-leader-election CM for configs (<a href="https://github.com/knative-extensions/eventing-kafka/pull/231">#231</a>)</li>
+<li>Removed support for pooling Azure EventHub Namespaces and now only support a single Namespace/Authentication which limits Azure EventHub usage to their constrained number of EventHubs (Kafka Topics). (<a href="https://github.com/knative-extensions/eventing-kafka/pull/297">#297</a>)</li>
+<li>The "distributed" KafkaChannel configuration YAML now includes the KafkaChannel WebHook which provides conversion. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/187">#187</a>)</li>
+<li>The KafkaSource will be installed in the knative-eventing namespace, and the old controller in knative-sources is scalled to 0 (<a href="https://github.com/knative-extensions/eventing-kafka/pull/224">#224</a>)</li>
+<li>Add a new alternative KafkaSource implementation in which a single global StatefulSet handles all KafkaSource instances. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/186">#186</a>)</li>
+<li>It is now possible to define Sarama config defaults for KafkaSource in config-kafka configmap with a sarama field. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/337">#337</a>)</li>
+<li>It is now possible to define Sarama config defaults for consolidated channel in config-kafka configmap with a sarama field. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/305">#305</a>)</li>
+<li>KafkaChannel CustomResourceDefinition now uses apiextensions.k8s.io/v1 APIs (<a href="https://github.com/knative-extensions/eventing-kafka/pull/132">#132</a>)</li>
+<li>The KafkaSource scale subresource can now be used to scale up and down the underlying deployment (<a href="https://github.com/knative-extensions/eventing-kafka/pull/138">#138</a>)</li>
+<li>Defaulting the connection args to a sane value (<a href="https://github.com/knative-extensions/eventing-kafka/pull/353">#353</a>)</li>
+</ul>
+<h4 id="bug-fixes_2">🐞 Bug Fixes<a class="headerlink" href="#bug-fixes_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>A bug was fixed in the consolidated KafkaChannel where subscriptions would show up in the channel's status.subscribers before the dispatcher becomes ready to dispatch messages for those subscribers.<ul>
+<li>Consolidated KafkaChannel dispatcher's horizontal scalability works now seamlessly with reconciler leader election. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/182">#182</a>)</li>
+</ul>
+</li>
+<li>Fix concurrent modification of consumer groups map, which causes undefined behaviours while running reconciliation in the dispatcher (<a href="https://github.com/knative-extensions/eventing-kafka/pull/352">#352</a>, @slinkydeveloper)</li>
+<li>Fix crash in Kafka consumer when a rebalance occurs (<a href="https://github.com/knative-extensions/eventing-kafka/pull/263">#263</a>, @lionelvillard)</li>
+<li>Fix race on error channel in consumer factory (<a href="https://github.com/knative-extensions/eventing-kafka/pull/364">#364</a>)</li>
+<li>The KafkaSource dispatchers now expose metrics and profiling information (<a href="https://github.com/knative-extensions/eventing-kafka/pull/221">#221</a>)</li>
+<li>The consolidated KafkaChannel now relies by default on SyncProducer for safer event production. (<a href="https://github.com/knative-extensions/eventing-kafka/pull/181">#181</a>)</li>
+</ul>
+<h4 id="eventing-kafka-broker-v021">Eventing Kafka Broker v0.21<a class="headerlink" href="#eventing-kafka-broker-v021" title="Permanent link">&para;</a></h4>
+<h4 id="new-features-changes_4">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_4" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Add support for SASL and SSL. (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/534">#534</a>, @pierDipi)<ul>
+<li><a href="https://knative.dev/docs/eventing/broker/kafka-broker/#security">Eventing Kafka Broker documentation</a></li>
+<li><a href="https://knative.dev/docs/eventing/sink/kafka-sink/#security">Eventing Kafka Sink documentation</a></li>
+</ul>
+</li>
+<li>Add support for Trigger.Spec.DeliverySpec (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/612">#612</a>)</li>
+<li>Improve status fields description in KafkaSink CRD. (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/552">#552</a>)</li>
+<li>Reduce error logging noise on clean shutdown. (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/625">#625</a>)</li>
+<li>Support Kubernetes 1.20. (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/542">#542</a>)</li>
+</ul>
+<h4 id="bug-fixes_3">🐞 Bug Fixes<a class="headerlink" href="#bug-fixes_3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Consume topic from the earliest offset (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/557">#557</a>)</li>
+<li>Fix offset management (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/557">#557</a>)</li>
+<li>Data plane reconciler handles failed reconciliation. (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/568">#568</a>)</li>
+<li>Fix TimeoutException and DnsNameResolverTimeoutException. (<a href="https://github.com/knative-extensions/eventing-kafka-broker/pull/539">#539</a>)</li>
+</ul>
+<h3 id="client-v021">Client v0.21<a class="headerlink" href="#client-v021" title="Permanent link">&para;</a></h3>
+<h4 id="breaking-or-notable_3">🚨 Breaking or Notable<a class="headerlink" href="#breaking-or-notable_3" title="Permanent link">&para;</a></h4>
+<p><strong>Revision naming</strong></p>
+<p>In this version, kn changes the default of how revisions are named. Up to now, the name was selected by the client itself, leveraging the "bring-your-own" (BYO) revision name support of Knative serving.</p>
+<p>However, it turned out that this mode has several severe drawbacks:</p>
+<ul>
+<li>If you create a service with client-side revision naming, you have to provide a new revision name on every update. This is especially tedious if using other clients than kn, like editing the resource directly in the cluster or you tools like the OpenShift Developer console. Assuming that kn is the only client to be used is a bit of a too bold attitude.</li>
+<li><code>SinkBinding</code> <a href="https://github.com/knative/serving/issues/9544">do not work with BYO revision names</a></li>
+<li><code>kn service apply</code> can't use client-generated revision names, so kn service apply ignore <code>--revision-name</code> option and always uses server-side generated revision names. The same is true if you want to use <code>kubectl apply</code> after you have created a service with BYO revision name mode with <code>kn</code>.</li>
+<li>Revision name's are random and do not reflect a certain generational order as for server-side generated revision names</li>
+<li>There are issues with new revision created when updated with the same image name again (see <a href="https://github.com/knative/client/issues/398#issuecomment-779654440">#398</a>)</li>
+</ul>
+<p>Please refer to issue <a href="https://github.com/knative/client/issues/1144">#1144</a> (and issues referencing this issue) for more details about the reasoning for this breaking change.</p>
+<p><strong>ACTION REQUIRED</strong></p>
+<p>If you rely on client-side revision naming, you have to add <code>--revision-name {{.Service}}-{{.Random 5}}-{{.Generation}}</code> to <code>kn service create</code> to get back the previous default behaviour. However, in most of all cases, you shound not worry about whether the revision names are created by <code>kn</code> or by the Knative serving controller</p>
+<p>In case of issues with this change, please let us know and we will fix it asap. We are committed to supporting you with any issues caused by this change.</p>
+<h4 id="new-features-changes_5">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Options <code>--context</code> and <code>--cluster</code> allow you to select the parameters for connecting to your Kubernetes cluster. Those options work the same as for kubectl.</li>
+<li>Some cleanup of cluster-specific runtime information when doing a kn export.</li>
+</ul>
+<h3 id="cli-plugins">CLI Plugins<a class="headerlink" href="#cli-plugins" title="Permanent link">&para;</a></h3>
+<h4 id="new-features-changes_6">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_6" title="Permanent link">&para;</a></h4>
+<p>CLI <code>kn</code> <a href="https://github.com/knative/client/blob/main/docs/plugins/README.md">Plugins</a> jump on the release train</p>
+<p>With release v0.21, Knative ships also it first set of kn plugins, that are aligned with respect to their dependencies, so that they can be easily <a href="https://github.com/knative/client/blob/main/docs/plugins/README.md#plugin-inlining">inlined</a>.</p>
+<p>The plugins included in version <code>v0.21</code> are:</p>
+<ul>
+<li><a href="https://github.com/knative-extensions/kn-plugin-admin">kn-plugin-admin</a> for managing Knative installations that are running on Kubernetes | <a href="https://github.com/knative-extensions/kn-plugin-admin/releases/tag/v0.21.0">download</a></li>
+<li><a href="https://github.com/knative-extensions/kn-plugin-source-kafka">kn-plugin-source-kafka</a> for managing a Kafka Source that has been installed via <a href="https://github.com/knative-extensions/eventing-kafka">eventing-kafka</a> on the backend | <a href="https://github.com/knative-extensions/kn-plugin-source-kafka/releases/tag/v0.21.0">download</a></li>
+</ul>
+<p>To give those plugins a try, just download them and put the binary into your execution path. You then get help with kn admin --help and kn source kafka --help, respectively.</p>
+<h3 id="operator-v021">Operator v0.21<a class="headerlink" href="#operator-v021" title="Permanent link">&para;</a></h3>
+<h4 id="new-features-changes_7">💫 New Features &amp; Changes<a class="headerlink" href="#new-features-changes_7" title="Permanent link">&para;</a></h4>
+<p>The latest network ingress v0.21.0 artifacts, bundled within the image of this operator, include net-istio.yaml, net-contour.yaml and kourier.yaml.</p>
+<ul>
+<li>Allow to configure Kourier gateway service-type (<a href="https://github.com/knative/operator/pull/470">#470</a>)</li>
+<li>Adds support for extension custom manifests (<a href="https://github.com/knative/operator/pull/468">#468</a>)</li>
+<li>Add HA support for autoscaler (<a href="https://github.com/knative/operator/pull/480">#480</a>)</li>
+<li>Support spec.deployments to override configuration of system deployments (<a href="https://github.com/knative/operator/pull/472">#472</a>)</li>
+<li>Add ha eventing master (<a href="https://github.com/knative/operator/pull/444">#444</a>)</li>
+</ul>
+<h4 id="bug-fixes_4">🐞 Bug Fixes<a class="headerlink" href="#bug-fixes_4" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Transition to the new upgrade framework for upgrade tests (<a href="https://github.com/knative/operator/pull/437">#437</a>)</li>
+<li>Add ingress configuration support (<a href="https://github.com/knative/operator/pull/312">#312</a>)</li>
+</ul>
+<h4 id="clean-up_2">🧹 Clean up<a class="headerlink" href="#clean-up_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Add <code>latest</code> as a special version supported by the operator (<a href="https://github.com/knative/operator/pull/443">#443</a>)</li>
+<li>Rewrite the tests for serving and eventing upgrade (<a href="https://github.com/knative/operator/pull/441">#441</a>)</li>
+<li>Allow to specify build platform for test images (<a href="https://github.com/knative/operator/pull/451">#451</a>)</li>
+<li>Bump a few assorted dependencies to their latest versions (<a href="https://github.com/knative/operator/pull/463">#463</a>)</li>
+<li>Align all used YAML modules (<a href="https://github.com/knative/operator/pull/462">#462</a>)</li>
+<li>Move istio gateway's override setting into spec.ingress.istio (<a href="https://github.com/knative/operator/pull/469">#469</a>)</li>
+</ul>
+<h3 id="thank-you-contributors-v021">Thank you contributors v0.21<a class="headerlink" href="#thank-you-contributors-v021" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://github.com/BbolroC">@BbolroC</a></li>
+<li><a href="https://github.com/Harwayne">@Harwayne</a></li>
+<li><a href="https://github.com/Shashankft9">@Shashankft9</a></li>
+<li><a href="https://github.com/aliok">@aliok</a></li>
+<li><a href="https://github.com/arturenault">@arturenault</a></li>
+<li><a href="https://github.com/cardil">@cardil</a></li>
+<li><a href="https://github.com/csantanapr">@csantanapr</a></li>
+<li><a href="https://github.com/devguyio">@devguyio</a></li>
+<li><a href="https://github.com/dsimansk">@dsimansk</a></li>
+<li><a href="https://github.com/eclipselu">@eclipselu</a></li>
+<li><a href="https://github.com/evankanderson">@evankanderson</a></li>
+<li><a href="https://github.com/grac3gao">@grac3gao</a></li>
+<li><a href="https://github.com/houshengbo">@houshengbo</a></li>
+<li><a href="https://github.com/julz">@julz</a></li>
+<li><a href="https://github.com/larhauga">@larhauga</a></li>
+<li><a href="https://github.com/lionelvillard">@lionelvillard</a></li>
+<li><a href="https://github.com/markusthoemmes">@markusthoemmes</a></li>
+<li><a href="https://github.com/mattmoor">@mattmoor</a></li>
+<li><a href="https://github.com/matzew">@matzew</a></li>
+<li><a href="https://github.com/matzew">@matzew</a></li>
+<li><a href="https://github.com/nak3">@nak3</a></li>
+<li><a href="https://github.com/navidshaikh">@navidshaikh</a></li>
+<li><a href="https://github.com/pierDipi">@pierDipi</a></li>
+<li><a href="https://github.com/rhuss">@rhuss</a></li>
+<li><a href="https://github.com/senthilnathan">@senthilnathan</a></li>
+<li><a href="https://github.com/shinigambit">@shinigambit</a></li>
+<li><a href="https://github.com/skonto">@skonto</a></li>
+<li><a href="https://github.com/slinkydeveloper">@slinkydeveloper</a></li>
+<li><a href="https://github.com/travis-minke-sap">@travis-minke-sap</a></li>
+<li><a href="https://github.com/vagababov">@vagababov</a></li>
+<li><a href="https://github.com/vaikas">@vaikas</a></li>
+<li><a href="https://github.com/whaught">@whaught</a></li>
+<li><a href="https://github.com/xtreme-sameer-vohra">@xtreme-sameer-vohra</a></li>
+<li><a href="https://github.com/zhongduo">@zhongduo</a></li>
+</ul>
+<h3 id="learn-more">Learn more<a class="headerlink" href="#learn-more" title="Permanent link">&para;</a></h3>
+<p>Knative is an open source project that anyone in the <a href="https://knative.dev/docs/community/">community</a> can use, improve, and enjoy. We'd love you to join us!</p>
+<ul>
+<li><a href="https://knative.dev/docs#welcome-to-knative">Welcome to Knative</a></li>
+<li><a href="https://knative.dev/docs/#getting-started">Getting started documentation</a></li>
+<li><a href="https://knative.dev/docs#samples-and-demos">Samples and demos</a></li>
+<li><a href="https://knative.dev/community/contributing/">Knative meetings and work groups</a></li>
+<li><a href="https://knative.dev/contributing/#questions-and-issues">Questions and issues</a></li>
+<li><a href="https://groups.google.com/forum/#!forum/knative-users">Knative User Mailing List</a></li>
+<li><a href="https://groups.google.com/forum/#!forum/knative-dev">Knative Development Mailing List</a></li>
+<li>Knative on Twitter <a href="https://twitter.com/KnativeProject">@KnativeProject</a></li>
+<li>Knative on <a href="https://stackoverflow.com/questions/tagged/knative">StackOverflow</a></li>
+<li>Knative <a href="https://slack.knative.dev">Slack</a></li>
+<li>Knative on <a href="https://www.youtube.com/channel/UCq7cipu-A1UHOkZ9fls1N8A">YouTube</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+
+<!-- Footer -->
+<footer class="md-footer">
+
+  <!-- Link to previous and/or next page -->
+  
+    <nav
+      class="md-footer__inner md-grid"
+      aria-label="footer.title"
+    >
+
+      <!-- Link to previous page -->
+      
+        <a
+          href="../announcing-knative-v0-22-release/"
+          class="md-footer__link md-footer__link--prev"
+          rel="prev"
+        >
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            
+              <span class="md-footer__direction">
+                Previous
+              </span>
+            
+            <div class="md-ellipsis">
+              v0.22 release
+            </div>
+          </div>
+        </a>
+      
+
+      <!-- Link to next page -->
+      
+        <a
+          href="../announcing-knative-v0-20-release/"
+          class="md-footer__link md-footer__link--next"
+          rel="next"
+        >
+          <div class="md-footer__title">
+            
+              <span class="md-footer__direction">
+                Next
+              </span>
+            
+            <div class="md-ellipsis">
+              v0.20 release
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+
+  <!-- Further information -->
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <!-- Copyright and theme information -->
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright © 2025 The Knative Authors
+          </div>
+        
+        
+        Documentation Distributed under CC BY 4.0
+      </div>
+
+      <div class="footer-links md-footer-copyright">
+        <a href="https://www.linuxfoundation.org/legal/trademark-usage">Trademarks</a> 
+        <span class="pipe">|</span>
+        <a href="https://policies.google.com/privacy">Privacy Policy</a> 
+        <span class="pipe">|</span>
+        <a href="/docs/about-analytics-cookies/">Cookie Usage</a> 
+        <span class="pipe">|</span>
+        <a href="https://github.com/knative/docs/blob/main/LICENSE">Apache-2.0 LICENSE</a> 
+        <span class="pipe">|</span>
+        <a href="https://github.com/knative/docs/blob/main/LICENSE-docs">CC BY 4.0 LICENSE</a> 
+        <span class="pipe">|</span>
+        <a href="https://squidfunk.github.io/mkdocs-material/">Made by Material MkDocs</a>
+    </div>
+    
+
+      <!-- Social links -->
+      <!-- 
+<div class="md-social">
+  
+</div> -->
+      <div class="md-social">
+        <a href="https://twitter.com/KnativeProject" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+					<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+        </a>
+        <a href="https://github.com/knative/community" target="_blank" rel="noopener" title="Knative Community on Github" class="md-social__link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+        </a>
+        <a href="https://slack.cncf.io" target="_blank" rel="noopener" title="Slack" class="md-social__link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"></path></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/knative" title="Linkedin" class="md-social__link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -15 448 512"><path d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z" /></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie Banner -->
+<div id="cookieModal" class="md-typeset modal custom fade" role="dialog" data-backdrop="false">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>We use cookies. <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/cookie-usage" target="_blank">Google Analytics</a> is used to improve your experience and help us understand site traffic and page usage.</p>
+        <div class="consent-buttons">
+          <button type="button" class="md-button" onclick="learnaboutcookies()">Learn more</button>
+          <button type="button" class="md-button md-button--primary" onclick="acceptcookie()">Accept</button>
+          <div class="opt-out">
+            <hr>
+            <p><a href="/docs/about-analytics-cookies/">Learn about analytics cookies and how you can take steps to opt-out from sharing your usage data.</a></p>
+            <button type="button" class="md-button" onclick="optout()">I understand how to opt-out, hide this notice.</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cookienotice md-typeset">
+  <div class="text">
+    <p>We use analytics and cookies to understand site traffic. Information about your use of
+      our site is shared with Google for that purpose. <a href="/docs/about-analytics-cookies/">Learn more.</a>
+    </p>
+  </div>
+  <div class="buttons">
+    <a class="close" onclick="closenotice()">&times;</a>
+    <a class="ok" onclick="acceptcookie()">OK</a>
+  </div>
+</div>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+  
+
+  <!-- Extra configuration -->
+  
+
+  <!-- Versioning -->
+  <!-- Configuration -->
+  <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+
+    
+  <script src="../../../assets/javascripts/bundle.0af37618.min.js"></script>
+  <!-- For now, load Jquery and Bootstrap because the cookie warning (built from the hugo-based website) uses them -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="/js/cookie-consent.js"></script>
+
+  </body>
+</html>
